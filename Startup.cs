@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using WebAppBooks.Contexts;
 
 namespace WebAppTest01
 {
@@ -26,15 +29,21 @@ namespace WebAppTest01
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region //-- Indicar el controlador de SqlServer
+            services.AddDbContext<ApplicationDbContext>(
+                options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                );
             services.AddControllers();
-            
-            #region 
-            //-- Forzar HTTPS
+            #endregion //-- Indicar el controlador de SqlServer
+
+            #region //-- Forzar HTTPS
             // Paso 1
             services.Configure<MvcOptions>
-                (options=>{
-                    options.Filters.Add(new RequireHttpsAttribute()); 
-                });            
+                (options =>
+                {
+                    options.Filters.Add(new RequireHttpsAttribute());
+                });
             #endregion //-- Forzar HTTPS
         }
 
@@ -57,8 +66,7 @@ namespace WebAppTest01
                 endpoints.MapControllers();
             });
 
-            #region
-            //--  Forza usar HTTPS
+            #region //--  Forza usar HTTPS
             // Requiere usar instalar Microsoft.AspNetCore.Rewrite
             // Paso 2
             // Cambiar en propiedades de proyecto, en debug habilitar SSL y copiar nuevo puerto
