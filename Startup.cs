@@ -37,8 +37,19 @@ namespace WebAppTest01
                 options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                 );
-            services.AddControllers();
             #endregion //-- Indicar el controlador de SqlServer
+
+            services.AddControllers();
+
+            #region //-- Configurar corregir Referencia cíclica
+            services.AddControllers().
+                AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling =
+                    Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+            #endregion //-- Configurar corregir Referencia cíclica
+
 
             #region //-- Forzar HTTPS
             // Paso 1
