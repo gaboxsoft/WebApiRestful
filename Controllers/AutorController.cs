@@ -25,13 +25,13 @@ namespace WebAppBooks.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Autor>>> Get()
+        public async Task<ActionResult<IEnumerable<AutorDTO>>> Get()
         {
-            var autores =  await context.Autores.ToListAsync();
-            return autores;
+            var autores = await context.Autores.ToListAsync();
+            return mapper.Map<List<AutorDTO>>(autores);
         }
 
-        [HttpGet("{Id}")]
+        [HttpGet("{Id}", Name="ObtenerAutor")]
         public async Task<ActionResult<AutorDTO>> Get(int Id)
         {
             var autor = await context.Autores.FirstOrDefaultAsync(x => x.Id == Id);
