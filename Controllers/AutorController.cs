@@ -27,6 +27,11 @@ namespace WebAppBooks.Controllers
             return autores;
         }
 
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<Autor>> Get(int Id)
+        {
+            var autor
+        }
 
 
     }
