@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebAppBooks.Models
 {
-    public class LibroDTOSimple
+    public class LibroDTOS
     {
         [Required]
         public string Titulo { get; set; }

@@ -13,5 +13,6 @@ namespace WebAppBooks.Models
         public string Titulo { get; set; }
         [Required]
         public int AutorId { get; set; }
+        public AutorDTO Autor { get; set; }
     }
 }

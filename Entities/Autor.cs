@@ -15,7 +15,7 @@ namespace WebAppBooks.Entities
         public string Indentificacion { get; set; }
         [Required]
         public DateTime FechaNacimiento { get; set; }
-        public IEnumerable<Libro> Libros { get; set; }
+        public List<Libro> Libros { get; set; }
 
     }
 }

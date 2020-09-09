@@ -13,5 +13,6 @@ namespace WebAppBooks.Models
         public string Nombre { get; set; }      
         [Required]
         public DateTime FechaNacimiento { get; set; }
+        public List<LibroDTO> Libros { get; set; }
     }
 }

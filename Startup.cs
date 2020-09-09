@@ -53,12 +53,12 @@ namespace WebAppTest01
             services.AddAutoMapper(configuration=>
             {
                 configuration.CreateMap<Autor, AutorDTO>().ReverseMap();
-                configuration.CreateMap<Autor, AutorDTOSimple>().ReverseMap();
-                configuration.CreateMap<AutorDTOSimple, AutorDTO>().ReverseMap();
+                configuration.CreateMap<Autor, AutorDTOS>().ReverseMap();
+                configuration.CreateMap<AutorDTOS, AutorDTO>().ReverseMap();
 
                 configuration.CreateMap<Libro, LibroDTO>().ReverseMap();
-                configuration.CreateMap<LibroDTO, LibroDTOSimple>().ReverseMap();
-                configuration.CreateMap<Libro, LibroDTOSimple>().ReverseMap();
+                configuration.CreateMap<LibroDTO, LibroDTOS>().ReverseMap();
+                configuration.CreateMap<Libro, LibroDTOS>().ReverseMap();
 
             }, typeof(Startup));
             #endregion
