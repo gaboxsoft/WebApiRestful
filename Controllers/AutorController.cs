@@ -30,7 +30,8 @@ namespace WebAppBooks.Controllers
         [HttpGet("{Id}")]
         public async Task<ActionResult<Autor>> Get(int Id)
         {
-            var autor
+            var autorDTOSimple = await context.Autores.FirstOrDefaultAsync(x => x.Id == Id);
+                
         }
 
 

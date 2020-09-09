@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WebAppBooks.Contexts;
+using WebAppBooks.Entities;
+using WebAppBooks.Models;
 
 namespace WebAppTest01
 {
@@ -45,6 +48,20 @@ namespace WebAppTest01
                     options.Filters.Add(new RequireHttpsAttribute());
                 });
             #endregion //-- Forzar HTTPS
+
+            #region //-- Agregar AutoMapper
+            services.AddAutoMapper(configuration=>
+            {
+                configuration.CreateMap<Autor, AutorDTO>().ReverseMap();
+                configuration.CreateMap<Autor, AutorDTOSimple>().ReverseMap();
+                configuration.CreateMap<AutorDTOSimple, AutorDTO>().ReverseMap();
+
+                configuration.CreateMap<Libro, LibroDTO>().ReverseMap();
+                configuration.CreateMap<LibroDTO, LibroDTOSimple>().ReverseMap();
+                configuration.CreateMap<Libro, LibroDTOSimple>().ReverseMap();
+
+            }, typeof(Startup));
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
