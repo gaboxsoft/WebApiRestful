@@ -32,7 +32,7 @@ namespace WebAppBooks.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AutorDTO>>> Get()
         {
-            var autores = await context.Autores.ToListAsync();
+            var autores = await context.Autores.Include(x=>x.Libros).ToListAsync();
             return mapper.Map<List<AutorDTO>>(autores);
         }
 
