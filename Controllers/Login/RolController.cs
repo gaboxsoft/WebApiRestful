@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +11,33 @@ using WebAppBooks.Models.Login;
 
 namespace WebAppBooks.Controllers.Login
 {
-    [Route("Login/[Controller]")]
+    [Route("users/[Controller]")]
     [ApiController]
     public class RolController:ControllerBase
     {
         private readonly ApplicationDbContext context;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> rolManager;
 
 
         public RolController(ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> rolManager)
         {
             this.context = context;
             this.userManager = userManager;
+            this.rolManager = rolManager;
         }
 
-        [HttpPost("CrearRol")]
-        public async Task<ActionResult<UserToken>> CrearRol([FromBody] RolDTO model)
-        {            
-            var user = new AspNetRoleManager { UserName = model.Email, Email = model.Email };
-            var result = await _userManager.CreateAsync(user, model.Password);
+        [HttpPost("Crear")]
+        public async Task<ActionResult<RolDTO>> Crear([FromBody] RolDTO model)
+        {      
+            var rol = new IdentityRole { ConcurrencyStamp = Guid.NewGuid().ToString(), Name=model.Name, NormalizedName=model.Name};
+            var result = await rolManager.CreateAsync(rol);
             if (result.Succeeded)
             {
-                return BuildToken(model, new List<string>());
+
+                return new RolDTO { Name = rol.Name };
             }
             else
             {

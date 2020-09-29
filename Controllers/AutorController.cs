@@ -18,7 +18,7 @@ namespace WebAppBooks.Controllers
 {
     [Route("[Controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AutoresController : ControllerBase
     {
         private readonly ApplicationDbContext context;

@@ -59,6 +59,8 @@ namespace WebAppTest01
             });
             #endregion //-- Configura el esquema de autenticación (que entienda el token)
 
+            
+
             #region //-- Indicar el controlador que se va a usar es SqlServer
             services.AddDbContext<ApplicationDbContext>(
                 options =>
