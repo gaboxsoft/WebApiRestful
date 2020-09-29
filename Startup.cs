@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +17,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using WebAppBooks.Contexts;
 using WebAppBooks.Entities;
 using WebAppBooks.Models;
+using WebAppBooks.Models.Login;
 
 namespace WebAppTest01
 {
@@ -32,10 +37,32 @@ namespace WebAppTest01
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region //-- Agrega Autenticación y Autorización
+            services
+                .AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            #endregion //-- Agrega Autenticación y Autorización
+
+            #region //-- Configura el esquema de autenticación (que entienda el token)
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options=>
+            options.TokenValidationParameters=new TokenValidationParameters
+            {
+                ValidateIssuer=false,
+                ValidateAudience=false,
+                ValidateLifetime=true,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(Configuration["jwt:key"])),
+                ClockSkew=TimeSpan.Zero
+            });
+            #endregion //-- Configura el esquema de autenticación (que entienda el token)
+
             #region //-- Indicar el controlador que se va a usar es SqlServer
             services.AddDbContext<ApplicationDbContext>(
                 options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))                
                 );
             #endregion //-- Indicar el controlador de SqlServer
 
@@ -88,6 +115,10 @@ namespace WebAppTest01
             app.UseRouting();
 
             app.UseAuthorization();
+
+            #region //-- Habilita autenticación antes de mapcontroller
+            app.UseAuthentication();
+            #endregion //-- Habilita autenticación antes de mapcontroller
 
             app.UseEndpoints(endpoints =>
             {

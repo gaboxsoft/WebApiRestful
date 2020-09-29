@@ -11,14 +11,14 @@ using WebAppBooks.Entities;
 using WebAppBooks.Models;
 
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebAppBooks.Controllers
 {
     [Route("[Controller]")]
     [ApiController]
-
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class AutoresController : ControllerBase
     {
         private readonly ApplicationDbContext context;
