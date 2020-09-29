@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAppBooks.Contexts;
 using WebAppBooks.Models;
@@ -46,22 +47,33 @@ namespace WebAppBooks.Controllers.Login
 
         }
 
-        //    [HttpPost("Sign")]
-        //    public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
-        //    {
-        //        var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
-        //        if (result.Succeeded)
-        //        {
-        //            var usuario = await _userManager.FindByEmailAsync(userInfo.Email);
-        //            var roles = await _userManager.GetRolesAsync(usuario);
-        //            return BuildToken(userInfo, roles);
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-        //            return BadRequest(ModelState);
-        //        }
-        //    }
+        [HttpPost("AddRolToUser")]
+        public async Task<ActionResult<UserToken>> AgregarRolAUsuario([FromBody] EditarRolDTO editarRolDTO)
+        {
+            var usuario = await userManager.FindByIdAsync(editarRolDTO.UserId);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            await userManager.AddClaimAsync(usuario, new Claim(ClaimTypes.Role, editarRolDTO.RolName));
+            await userManager.AddToRoleAsync(usuario, editarRolDTO.RolName);
+            return Ok();
+        }
+
+        [HttpPost("RemoveRolFromUser")]
+        public async Task<ActionResult<UserToken>> QuitarRolDelUsuario([FromBody] EditarRolDTO editarRolDTO)
+        {
+            var usuario = await userManager.FindByIdAsync(editarRolDTO.UserId);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+
+            await userManager.RemoveClaimAsync(usuario, new Claim(ClaimTypes.Role, editarRolDTO.RolName));
+            await userManager.RemoveFromRoleAsync(usuario, editarRolDTO.RolName);
+            return Ok();
+        }
 
         //    private UserToken BuildToken(UserInfo userInfo, IList<string> roles)
         //    {
