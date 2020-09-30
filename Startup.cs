@@ -37,6 +37,18 @@ namespace WebAppTest01
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region //-- Habilita CORS
+            services.AddCors(options=>
+            {
+                options.AddPolicy("PermitirTodo",
+                          builder => builder
+                          .WithOrigins("*")
+                          .WithMethods("*")
+                          .WithHeaders("*")
+                    );
+            });
+            #endregion //-- Habilita CORS
+
             #region //-- Agrega Autenticación y Autorización
             services
                 .AddIdentity<ApplicationUser, IdentityRole>()
@@ -58,9 +70,7 @@ namespace WebAppTest01
                 ClockSkew=TimeSpan.Zero
             });
             #endregion //-- Configura el esquema de autenticación (que entienda el token)
-
             
-
             #region //-- Indicar el controlador que se va a usar es SqlServer
             services.AddDbContext<ApplicationDbContext>(
                 options =>
@@ -121,6 +131,14 @@ namespace WebAppTest01
             #region //-- Habilita autenticación antes de mapcontroller
             app.UseAuthentication();
             #endregion //-- Habilita autenticación antes de mapcontroller
+
+            #region //-- Configura CORS
+            app.UseCors();
+            //app.UseCors(builder => builder.WithOrigins("*").WithMethods("*").WithHeaders("*"));
+            //app.UseCors(builder => builder.WithOrigins("*").WithMethods("*").AllowAnyOrigin());
+            //app.UseCors(builder => builder.WithOrigins("*").AllowAnyMethod().AllowAnyOrigin());
+            //app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyOrigin());
+            #endregion //-- Configura CORS
 
             app.UseEndpoints(endpoints =>
             {
