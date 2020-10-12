@@ -9,6 +9,16 @@
     <Compile Remove="Migrations\20200909015447_AddTableAutor.Designer.cs" />
   </ItemGroup>
 
+	<!-- INICIA
+	Habilita comentarios adicionales Swagger 
+	-->
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+	<!-- TERMINA
+	Habilita comentarios adicionales Swagger 
+	-->
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
@@ -22,6 +32,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
   </ItemGroup>
 
 

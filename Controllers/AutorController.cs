@@ -16,9 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebAppBooks.Controllers
 {
-    /// <summary>
-    /// Api Autores
-    /// </summary>
+    
 
     [Route("[Controller]")]
     [ApiController]
@@ -41,9 +39,8 @@ namespace WebAppBooks.Controllers
         }
 
         /// <summary>
-        /// EndPoint GET /Autores
+        /// Regresa todos los Autores
         /// </summary>
-        /// <param name="">No requiere parámetros.</param>
         /// <returns>Una lista de todos los autores en un IEnumerable<AutorDTO> </returns>
         /// 
         [HttpGet]
