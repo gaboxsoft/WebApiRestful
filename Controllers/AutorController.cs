@@ -16,6 +16,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebAppBooks.Controllers
 {
+    /// <summary>
+    /// Api Autores
+    /// </summary>
+
     [Route("[Controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles ="admin")]
@@ -23,12 +27,25 @@ namespace WebAppBooks.Controllers
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+
+        /// <summary>
+        /// Constructor Autores
+        /// </summary>
+        /// <param name="context">Inyecta el contexto de la base de datos.</param>
+        /// <param name="mapper">Inyecta el mapeo de objetos.</param>
+
         public AutoresController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
 
+        /// <summary>
+        /// EndPoint GET /Autores
+        /// </summary>
+        /// <param name="">No requiere parámetros.</param>
+        /// <returns>Una lista de todos los autores en un IEnumerable<AutorDTO> </returns>
+        /// 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AutorDTO>>> Get()
         {

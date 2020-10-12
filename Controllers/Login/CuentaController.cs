@@ -33,6 +33,11 @@ namespace WebAppBooks.Controllers.Login
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// Endpoint Crear usuario
+        /// </summary>
+        /// <param name="model">FromBody de tipo UserInfo</param>
+        /// <returns>ActionResult<UserToken> o un mensaje de error: "Nombre de usuario o contraseña no válidos."</returns>
         [HttpPost("Crear")]
         public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
         {
@@ -49,6 +54,11 @@ namespace WebAppBooks.Controllers.Login
 
         }
 
+        /// <summary>
+        /// EndPoint Sign hace login 
+        /// </summary>
+        /// <param name="userInfo"> FromBody de tipo UserInfo</param>
+        /// <returns>ActionResult<UserToken> o un mensaje de error: "Intento de login inválido." </returns>
         [HttpPost("Sign")]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
@@ -61,7 +71,7 @@ namespace WebAppBooks.Controllers.Login
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                ModelState.AddModelError(string.Empty, "Intento de login inválido.");
                 return BadRequest(ModelState);
             }
         }

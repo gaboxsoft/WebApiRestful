@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using WebAppBooks.Contexts;
 using WebAppBooks.Entities;
 using WebAppBooks.Models;
@@ -111,12 +113,36 @@ namespace WebAppTest01
                 configuration.CreateMap<Libro, LibroDTOS>().ReverseMap();
 
             }, typeof(Startup));
-            #endregion
+            #endregion //-- Agregar AutoMapper
+
+            #region //-- Habilita Swagger 
+            services.AddSwaggerGen(
+                config=>
+                {
+                    var info = new OpenApiInfo();
+                    info.Title = "ApiWeb Libros";
+                    info.Version = "V1";
+                    config.SwaggerDoc("v1", info);
+                }
+                );
+            #endregion //-- Habilita Swagger
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            #region //-- Habilita Swagger 
+            app.UseSwagger();
+            app.UseSwaggerUI(
+                config =>
+                {   
+                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "ApiWeb Libros v1");
+                }
+                );
+            #endregion //-- Habilita Swagger
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
