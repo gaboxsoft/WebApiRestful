@@ -38,6 +38,11 @@ namespace WebAppTest01
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region //-- Habilita inyección de dependencias
+            // services.AddTransient(IInterfase, Clase);
+            #endregion //-- Habilita inyección de dependencias
+
+
             #region //-- Habilita CORS
             services.AddCors(options=>
             {
@@ -89,7 +94,6 @@ namespace WebAppTest01
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 });
             #endregion //-- Configurar corregir Referencia cíclica
-
 
             #region //-- Forzar HTTPS
             // Paso 1
@@ -166,6 +170,10 @@ namespace WebAppTest01
                 );
             #endregion //-- Habilita Swagger
 
+            #region //-- Habilita autenticación antes de mapcontroller
+            app.UseAuthentication();
+            #endregion //-- Habilita autenticación antes de mapcontroller
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -177,16 +185,14 @@ namespace WebAppTest01
 
             app.UseAuthorization();
 
-            #region //-- Habilita autenticación antes de mapcontroller
-            app.UseAuthentication();
-            #endregion //-- Habilita autenticación antes de mapcontroller
+          
 
             #region //-- Configura CORS
             app.UseCors();
             //app.UseCors(builder => builder.WithOrigins("*").WithMethods("*").WithHeaders("*"));
             //app.UseCors(builder => builder.WithOrigins("*").WithMethods("*").AllowAnyOrigin());
             //app.UseCors(builder => builder.WithOrigins("*").AllowAnyMethod().AllowAnyOrigin());
-            //app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyOrigin());
             #endregion //-- Configura CORS
 
             app.UseEndpoints(endpoints =>
