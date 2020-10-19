@@ -21,6 +21,7 @@ using WebAppBooks.Contexts;
 using WebAppBooks.Entities;
 using WebAppBooks.Models;
 using WebAppBooks.Models.Login;
+using WebAppBooks.Services;
 
 [assembly: ApiConventionType(typeof(DefaultApiConventions))]
 
@@ -39,7 +40,10 @@ namespace WebAppTest01
         public void ConfigureServices(IServiceCollection services)
         {
             #region //-- Habilita inyección de dependencias
-            // services.AddTransient(IInterfase, Clase);
+
+            // StartStop Service
+            services.AddTransient<Microsoft.Extensions.Hosting.IHostedService, StartStopHostedService>();
+
             #endregion //-- Habilita inyección de dependencias
 
 
@@ -159,6 +163,7 @@ namespace WebAppTest01
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
 
             #region //-- Habilita Swagger 
             app.UseSwagger();
