@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace WebAppBooks.Controllers.Login
         private readonly ApplicationDbContext context;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> rolManager;
+        private readonly IMapper mapper;
 
 
         public RolController(ApplicationDbContext context,
@@ -74,6 +77,26 @@ namespace WebAppBooks.Controllers.Login
             await userManager.RemoveFromRoleAsync(usuario, editarRolDTO.RolName);
             return Ok();
         }
+
+        [HttpGet("Get")]
+        public async Task<ActionResult<List<RolDTO>>> Get()
+        {
+            //List<RolDTO> roles = mapper.Map<List<RolDTO>>((await context.Roles.ToListAsync()));
+            var roles = await context.Roles.ToListAsync();
+
+            if (roles == null)
+            {
+                return NotFound();
+            }
+            List<RolDTO> rolesDTO = new List<RolDTO>();
+            foreach (var rol in roles)
+            {
+                rolesDTO.Add(new RolDTO {Name=rol.Name });
+            }
+            //return mapper.Map<List<RolDTO>>(roles);
+            return rolesDTO;
+        }
+
 
         //    private UserToken BuildToken(UserInfo userInfo, IList<string> roles)
         //    {

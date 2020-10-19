@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.Swagger;
+//using Swashbuckle.Swagger;
 using System;
 using System.IO;
 using System.Reflection;
@@ -104,6 +104,7 @@ namespace WebAppTest01
                 configuration.CreateMap<Autor, AutorDTO>().ReverseMap();
                 configuration.CreateMap<Autor, AutorDTOS>().ReverseMap();
                 configuration.CreateMap<AutorDTOS, AutorDTO>().ReverseMap();
+
 
                 configuration.CreateMap<Libro, LibroDTO>().ReverseMap();
                 configuration.CreateMap<LibroDTO, LibroDTOS>().ReverseMap();
