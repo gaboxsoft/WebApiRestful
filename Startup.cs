@@ -22,6 +22,8 @@ using WebAppBooks.Entities;
 using WebAppBooks.Models;
 using WebAppBooks.Models.Login;
 
+[assembly: ApiConventionType(typeof(DefaultApiConventions))]
+
 namespace WebAppTest01
 {
     public class Startup
