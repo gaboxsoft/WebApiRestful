@@ -18,6 +18,22 @@ namespace WebAppTest01
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+        #region //-- Configuración de proveedores de datos de configuración de la WebApp
+            .ConfigureAppConfiguration(
+                (env, config) =>
+                    {
+                        var ambiente = env.HostingEnvironment.EnvironmentName;
+                        config.AddJsonFile("appSettings.json", optional: true, reloadOnChange: true);
+                        config.AddJsonFile($"appSettings.{ambiente}.json", optional: true, reloadOnChange: true);
+                        config.AddEnvironmentVariables();
+                        if (args != null)
+                        {
+                            config.AddCommandLine(args);
+                        }
+                    }
+                )
+        #endregion //-- Configuración de proveedores de datos de configuración de la WebApp
+
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

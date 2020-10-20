@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace WebAppBooks.Services
 {
-    public class StartStopHostedService : IHostedService
+    public class StartStopHostedService : IHostedService, IDisposable
     {
         private readonly IHostEnvironment environment;
         private readonly string file = "StartStopHostingService.log";
+        Timer timer;
+
         public StartStopHostedService(IHostEnvironment environment)
         {
             this.environment = environment;
         }
         public Task StartAsync(CancellationToken cancellationToken)
         {
+            timer = new Timer(DoWork, null, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(5));
             WriteToFile($"{DateTime.Now} -> Process starting.");
             return Task.CompletedTask;
         }
@@ -25,8 +28,14 @@ namespace WebAppBooks.Services
         public Task StopAsync(CancellationToken cancellationToken)
         {
             WriteToFile($"{DateTime.Now} -> Process stopping.");
+            timer?.Change(Timeout.Infinite, 0);
             return Task.CompletedTask;
         }
+        private void DoWork(object state)
+        {
+            WriteToFile($"{DateTime.Now} -> Doing some work.");
+        }
+
 
         public void WriteToFile(string mensaje)
         {
@@ -35,6 +44,11 @@ namespace WebAppBooks.Services
             {
                 writer.WriteLine(mensaje);
             };
+        }
+
+        public void Dispose()
+        {
+            timer?.Dispose();
         }
     }
 }
